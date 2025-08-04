@@ -11,8 +11,67 @@ const index = async () => {
     }
 };
 
+const create = async (formData) => {
+  try {
+    const res = await fetch(BASE_URL, {
+      // We specify that this is a 'POST' request
+      method: 'POST',
+      // We're sending JSON data, so we attach a Content-Type header
+      // and specify that the data being sent is type 'application/json'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      // The formData, converted to JSON, is sent as the body
+      // This will be received on the back-end as req.body
+      body: JSON.stringify(formData),
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const update = async (formData, petId) => {
+  try {
+    const res = await fetch(`${BASE_URL}/${petId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+    return res.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const deletePet = async (petId) => {
+  try {
+    console.log('Making DELETE request to:', `${BASE_URL}/${petId}`);
+    const res = await fetch(`${BASE_URL}/${petId}`, {
+      method: 'DELETE',
+    });
+    console.log('Delete response status:', res.status);
+    
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    
+    const result = await res.json();
+    console.log('Delete result:', result);
+    return result;
+  } catch (err) {
+    console.log('Delete service error:', err);
+    throw err;
+  }
+};
+
 console.log(await index());
 
 export {
     index,
-}
+    create,
+    update,
+    deletePet
+};

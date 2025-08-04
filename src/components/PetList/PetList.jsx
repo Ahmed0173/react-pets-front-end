@@ -12,12 +12,21 @@ const PetList = (props) => {
           <h2>No Pets Yet!</h2>
         ) : (
           <ul>
-            {props.pets.map((pet) => (
-              <li key={pet._id}>{pet.name}</li>
-            ))}
+            {props.pets.map((pet) => 
+              <li 
+                key={pet._id}
+                onClick={() => props.handleSelect(pet)}
+              >
+                {pet.name}
+              </li>
+            )}
           </ul>
         )}
       </div>
+      {/* Our new button! */}
+      <button onClick={props.handleFormView}>
+        {props.isFormOpen ? 'Close Form' : 'New Pet'}
+      </button>
     </div>
   );
 };
